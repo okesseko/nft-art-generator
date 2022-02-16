@@ -2,14 +2,13 @@ const { readFileSync, writeFileSync, readdirSync, rmSync, existsSync, mkdirSync 
 const sharp = require('sharp');
 
 const template = `
-    <svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="500" height="500" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
         <!-- bg -->
+        <!-- face -->
         <!-- head -->
-        <!-- hair -->
-        <!-- eyes -->
-        <!-- nose -->
+        <!-- eye -->
         <!-- mouth -->
-        <!-- beard -->
+        <!-- body -->
     </svg>
 `
 
@@ -62,15 +61,14 @@ async function svgToPng(name) {
 
 function createImage(idx) {
 
-    const bg = randInt(5);
-    const hair = randInt(7);
-    const eyes = randInt(9);
-    const nose = randInt(4); 
-    const mouth = randInt(5);
-    const beard = randInt(3);
-    // 18,900 combinations
+    const headColor = randInt(7);
+    const head = randInt(5);
+    const eye = randInt(4);
+    const mouth = randInt(6);
+    const body = randInt(3);
+    // 5040 combinations
 
-    const face = [hair, eyes, mouth, nose, beard].join('');
+    const face = [headColor,head, eye, mouth, body].join("");
 
     if (face[takenFaces]) {
         createImage();
@@ -79,14 +77,14 @@ function createImage(idx) {
         console.log(name)
         face[takenFaces] = face;
 
+
         const final = template
-            .replace('<!-- bg -->', getLayer(`bg${bg}`))
-            .replace('<!-- head -->', getLayer('head0'))
-            .replace('<!-- hair -->', getLayer(`hair${hair}`))
-            .replace('<!-- eyes -->', getLayer(`eyes${eyes}`))
-            .replace('<!-- nose -->', getLayer(`nose${nose}`))
-            .replace('<!-- mouth -->', getLayer(`mouth${mouth}`))
-            .replace('<!-- beard -->', getLayer(`beard${beard}`, 0.5))
+          .replace("<!-- bg -->", getLayer(`bg0`))
+          .replace("<!-- face -->", getLayer(`face${headColor}`))
+          .replace("<!-- head -->", getLayer(`head${head}`))
+          .replace("<!-- eye -->", getLayer(`eye${eye}`))
+          .replace("<!-- mouth -->", getLayer(`mouth${mouth}`))
+          .replace("<!-- body -->", getLayer(`body${body}`));
 
         const meta = {
             name,
